@@ -52,7 +52,11 @@
                             <CheckBox x:Name="ChkLockApps" Content="Enable Password Guard for Blocked Apps" FontSize="13" Margin="0,5" IsChecked="True"/>
 
                             <TextBlock Text="Active Blocked Apps &amp; Domains:" FontSize="13" FontWeight="SemiBold" Margin="0,15,0,5" Foreground="#333"/>
-                            <ListBox x:Name="LstTargets" Height="140" BorderBrush="#E0E0E0" CornerRadius="4" Padding="5"/>
+                            
+                            <!-- Fixed ListBox inside Border -->
+                            <Border BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4">
+                                <ListBox x:Name="LstTargets" Height="140" BorderThickness="0" Padding="5"/>
+                            </Border>
 
                             <Button x:Name="BtnToggleGuard" Content="Activate Protection Guard" Click="ToggleGuard_Click" Margin="0,15,0,0" HorizontalAlignment="Left"/>
                         </StackPanel>
