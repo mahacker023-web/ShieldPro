@@ -85,7 +85,7 @@ namespace AppBlocker
             }
         }
 
-        // Background Monitoring
+        // Background Monitoring Service
         private async void ToggleGuard_Click(object sender, RoutedEventArgs e)
         {
             _isGuardActive = !_isGuardActive;
@@ -149,19 +149,51 @@ namespace AppBlocker
                 return;
             }
 
-            // Lock Prompt Window
-            string input = Microsoft.VisualBasic.Interaction.InputBox(
-                $"Application '{proc.ProcessName}.exe' is locked by ShieldPro!\n\nEnter Master Password to unlock:",
-                "ShieldPro Security Verification", "");
+            // Custom WPF Prompt Window for Verification
+            var promptWindow = new Window
+            {
+                Title = "ShieldPro Security Lock",
+                Width = 380,
+                Height = 180,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                WindowStyle = WindowStyle.ToolWindow,
+                ResizeMode = ResizeMode.NoResize,
+                Topmost = true
+            };
 
-            if (input == _masterPassword)
+            var stack = new StackPanel { Margin = new Thickness(15) };
+            stack.Children.Add(new TextBlock { Text = $"'{proc.ProcessName}.exe' is locked by ShieldPro!\nEnter Master Password:", FontWeight = FontWeights.Bold, Margin = new Thickness(0, 0, 0, 10) });
+
+            var passBox = new PasswordBox { Height = 30, Margin = new Thickness(0, 0, 0, 10) };
+            stack.Children.Add(passBox);
+
+            var btnUnlock = new Button { Content = "Unlock Application", Height = 32, Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0067C0")), Foreground = Brushes.White };
+            
+            bool isUnlocked = false;
+            btnUnlock.Click += (s, e) =>
+            {
+                if (passBox.Password == _masterPassword)
+                {
+                    isUnlocked = true;
+                    promptWindow.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Incorrect Password!", "ShieldPro", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+
+            stack.Children.Add(btnUnlock);
+            promptWindow.Content = stack;
+            promptWindow.ShowDialog();
+
+            if (isUnlocked)
             {
                 _allowedProcessIds.Add(proc.Id);
             }
             else
             {
                 try { proc.Kill(); } catch { }
-                MessageBox.Show("Incorrect Password! Access Denied.", "ShieldPro Guard", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
