@@ -1,7 +1,7 @@
 <Window x:Class="AppBlocker.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ShieldPro - Corporate Blocker" Height="550" Width="800"
+        Title="ShieldPro - Corporate Guard" Height="600" Width="850"
         WindowStartupLocation="CenterScreen" WindowStyle="None"
         AllowsTransparency="True" Background="Transparent"
         MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
@@ -13,10 +13,10 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Win 11 Header -->
+            <!-- Win 11 Header Bar -->
             <Grid Grid.Row="0" Background="#F0F0F0">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="15,0,0,0">
-                    <TextBlock Text="🛡️ ShieldPro Corporate System Blocker" FontSize="13" FontWeight="Bold" Foreground="#222222"/>
+                    <TextBlock Text="🛡️ ShieldPro Corporate Security Suite" FontSize="13" FontWeight="Bold" Foreground="#222222"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -25,48 +25,59 @@
                 </StackPanel>
             </Grid>
 
-            <!-- Body Container -->
+            <!-- Main Body Layout -->
             <Grid Grid.Row="1" Margin="20">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="210"/>
+                    <ColumnDefinition Width="220"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Sidebar Navigation -->
                 <StackPanel Grid.Column="0" Margin="0,0,15,0">
-                    <Button x:Name="BtnWeb" Content="🌐 Website Blocker" Click="NavWeb_Click" Margin="0,0,0,10" Background="#E5E5E5" Foreground="#1A1A1A"/>
-                    <Button x:Name="BtnApp" Content="🚫 App Blocker" Click="NavApp_Click" Margin="0,0,0,10" Background="Transparent" Foreground="#1A1A1A"/>
+                    <Button x:Name="BtnWeb" Content="🌐 Web &amp; App Shield" Click="NavWeb_Click" Margin="0,0,0,10" Background="#E5E5E5" Foreground="#1A1A1A"/>
+                    <Button x:Name="BtnSettings" Content="⚙️ Security Settings" Click="NavSettings_Click" Margin="0,0,0,10" Background="Transparent" Foreground="#1A1A1A"/>
                     <Button x:Name="BtnAbout" Content="👨‍💻 About Developer" Click="NavAbout_Click" Margin="0,0,0,10" Background="Transparent" Foreground="#1A1A1A"/>
                 </StackPanel>
 
                 <!-- Main Content Panes -->
                 <Grid Grid.Column="1">
                     
-                    <!-- Tab 1: Web Blocker -->
+                    <!-- Tab 1: Shielding Controls -->
                     <Border x:Name="TabWeb" Background="White" CornerRadius="8" Padding="20" BorderBrush="#E0E0E0" BorderThickness="1">
                         <StackPanel>
-                            <TextBlock Text="Website Restrictions" FontSize="18" FontWeight="Bold" Foreground="#0067C0" Margin="0,0,0,8"/>
-                            <TextBlock Text="Block adult sites or custom URLs across all browsers." Foreground="#666666" Margin="0,0,0,15"/>
+                            <TextBlock Text="System Shielding" FontSize="18" FontWeight="Bold" Foreground="#0067C0" Margin="0,0,0,5"/>
+                            <TextBlock Text="Protect your environment from restricted content and apps." Foreground="#666666" Margin="0,0,0,15"/>
 
-                            <CheckBox x:Name="ChkAdultBlock" Content="Block Adult Websites (pornhub.com, etc.)" FontSize="13" Margin="0,6" IsChecked="True"/>
-                            
-                            <TextBlock Text="Custom Domain to Block:" FontSize="12" Margin="0,15,0,5" Foreground="#333"/>
-                            <TextBox x:Name="TxtCustomDomain" Height="32" Padding="8,4" VerticalContentAlignment="Center" Text="facebook.com"/>
-                            
-                            <Button Content="Apply Web Restrictions" Click="ApplyWebGuard_Click" Margin="0,20,0,0" HorizontalAlignment="Left"/>
+                            <CheckBox x:Name="ChkAdultBlock" Content="Block Adult Content (Pornhub, etc.)" FontSize="13" Margin="0,5" IsChecked="True"/>
+                            <CheckBox x:Name="ChkLockApps" Content="Enable Password Guard for Blocked Apps" FontSize="13" Margin="0,5" IsChecked="True"/>
+
+                            <TextBlock Text="Active Blocked Apps &amp; Domains:" FontSize="13" FontWeight="SemiBold" Margin="0,15,0,5" Foreground="#333"/>
+                            <ListBox x:Name="LstTargets" Height="140" BorderBrush="#E0E0E0" CornerRadius="4" Padding="5"/>
+
+                            <Button x:Name="BtnToggleGuard" Content="Activate Protection Guard" Click="ToggleGuard_Click" Margin="0,15,0,0" HorizontalAlignment="Left"/>
                         </StackPanel>
                     </Border>
 
-                    <!-- Tab 2: App Blocker -->
-                    <Border x:Name="TabApp" Background="White" CornerRadius="8" Padding="20" BorderBrush="#E0E0E0" BorderThickness="1" Visibility="Collapsed">
+                    <!-- Tab 2: Security Settings -->
+                    <Border x:Name="TabSettings" Background="White" CornerRadius="8" Padding="20" BorderBrush="#E0E0E0" BorderThickness="1" Visibility="Collapsed">
                         <StackPanel>
-                            <TextBlock Text="Application Process Guard" FontSize="18" FontWeight="Bold" Foreground="#0067C0" Margin="0,0,0,8"/>
-                            <TextBlock Text="Prevent selected programs from running on this PC." Foreground="#666666" Margin="0,0,0,15"/>
+                            <TextBlock Text="Security Configuration" FontSize="18" FontWeight="Bold" Foreground="#0067C0" Margin="0,0,0,5"/>
+                            <TextBlock Text="Manage master password and add custom target apps/URLs." Foreground="#666666" Margin="0,0,0,15"/>
 
-                            <CheckBox x:Name="ChkBlockChromeApp" Content="Block Google Chrome (chrome.exe)" FontSize="13" Margin="0,6" IsChecked="True"/>
-                            <CheckBox x:Name="ChkBlockIDM" Content="Block Internet Download Manager (idman.exe)" FontSize="13" Margin="0,6" IsChecked="True"/>
+                            <TextBlock Text="Master Password:" FontSize="12" FontWeight="SemiBold" Foreground="#333"/>
+                            <PasswordBox x:Name="TxtMasterPassword" Password="1234" Height="32" Padding="6,2" Margin="0,4,0,15"/>
 
-                            <Button x:Name="BtnToggleApp" Content="Start Guarding Service" Click="ToggleAppService_Click" Margin="0,20,0,0" HorizontalAlignment="Left"/>
+                            <TextBlock Text="Add Custom App Process Name (e.g., vlc, notepad):" FontSize="12" FontWeight="SemiBold" Foreground="#333"/>
+                            <Grid Margin="0,4,0,15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtNewTarget" Height="32" Padding="6,2" VerticalContentAlignment="Center"/>
+                                <Button Grid.Column="1" Content="Add Item" Click="AddTarget_Click" Margin="10,0,0,0"/>
+                            </Grid>
+
+                            <Button Content="Save Security Settings" Click="SaveSettings_Click" HorizontalAlignment="Left" Background="#0B6623"/>
                         </StackPanel>
                     </Border>
 
@@ -77,10 +88,14 @@
                                 <TextBlock Text="M" Foreground="White" FontSize="38" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <TextBlock Text="Mubashir" FontSize="22" FontWeight="Bold" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Lead Software Engineer" FontSize="13" Foreground="#0067C0" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,2,0,12"/>
+                            <TextBlock Text="Software Developer &amp; UI Architect" FontSize="13" Foreground="#0067C0" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,2,0,15"/>
 
-                            <TextBlock Text="ShieldPro Corporate Blocker v1.0" FontSize="12" Foreground="#777777" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Built with C# &amp; Win11 Fluent UI Framework." FontSize="11" Foreground="#AAAAAA" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                            <Border Background="#F4F6F8" CornerRadius="6" Padding="15" Margin="0,5,0,15" Width="400">
+                                <TextBlock Text="&quot;Thank you for using ShieldPro! Wishing all users a secure, focused, and highly productive digital experience. Stay safe and keep building high.&quot;" 
+                                           TextWrapping="Wrap" TextAlignment="Center" FontStyle="Italic" Foreground="#555555" FontSize="12"/>
+                            </Border>
+
+                            <TextBlock Text="ShieldPro Corporate Edition v2.0" FontSize="11" Foreground="#999999" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
 
